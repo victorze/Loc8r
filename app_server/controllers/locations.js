@@ -71,7 +71,7 @@ const homelist = (req, res) => {
   );
 };
 
-const locationInfo = (req, res) => {
+const getLocationInfo = (req, res, callback) => {
   const path = `/api/locations/${req.params.locationid}`;
   const requestOptions = {
     url: `${apiOptions.server}${path}`,
@@ -87,11 +87,17 @@ const locationInfo = (req, res) => {
           lng: body.coords[0],
           lat: body.coords[1]
         };
-        renderDetailPage(req, res, data);
+        callback(req, res, data);
       } else {
         showError(req, res, statusCode);
       }
     }
+  );
+};
+
+const locationInfo = (req, res) => {
+  getLocationInfo(req, res,
+    (req, res, responseData) => renderDetailPage(req, res, responseData)
   );
 };
 
@@ -130,17 +136,49 @@ const renderDetailPage = (req, res, location) => {
   );
 };
 
+const renderReviewForm = (req, res, { name }) => {
+  res.render('location-review-form', {
+    title: `Review ${name} on Loc8r`,
+    pageHeader: { title: `Review ${name}` }
+  });
+};
+
+/* GET 'Add review' page */
 const addReview = (req, res) => {
-  res.render('location-review-form',
-    {
-      title: 'Review Starcups on Loc8r' ,
-      pageHeader: { title: 'Review Starcups' }
-    }
+  getLocationInfo(req, res,
+    (req, res, responseData) => renderReviewForm(req, res, responseData)
   );
+};
+
+const doAddReview = (req, res) => {
+  const locationid = req.params.locationid;
+  const path = `/api/locations/${locationid}/reviews`;
+  const postdata = {
+    author: req.body.name,
+    rating: parseInt(req.body.rating),
+    reviewText: req.body.review,
+  };
+  const requestOptions = {
+    url:`${apiOptions.server}${path}`,
+    method: 'POST',
+    json: postdata,
+  };
+
+  request(
+    requestOptions,
+    (err, { statusCode }, body) => {
+      if (statusCode === 201) {
+        res.redirect(`/location/${locationid}`);
+      } else {
+        showError(req, res, statusCode);
+      }
+    }
+  )
 };
 
 module.exports = {
   homelist,
   locationInfo,
-  addReview
+  addReview,
+  doAddReview,
 };
