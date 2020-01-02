@@ -157,29 +157,28 @@ const doAddReview = (req, res) => {
   const postdata = {
     author: req.body.name,
     rating: parseInt(req.body.rating),
-    reviewText: req.body.review,
+    reviewText: req.body.review
   };
   const requestOptions = {
-    url:`${apiOptions.server}${path}`,
-    method: 'POST',
-    json: postdata,
+    url: `${apiOptions.server}${path}`,
+    method: "POST",
+    json: postdata
   };
 
-  request(
-    requestOptions,
-    (err, { statusCode }, { name }) => {
+  if (!postdata.author || !postdata.rating || !postdata.reviewText) {
+    res.redirect(`/location/${locationid}/review/new?err=val`);
+  } else {
+    request(requestOptions, (err, { statusCode }, { name }) => {
       if (statusCode === 201) {
         res.redirect(`/location/${locationid}`);
-      } else if (statusCode === 400
-          && name && name === 'ValidationError') {
-            console.log(name);
+      } else if (statusCode === 400 && name && name === "ValidationError") {
+        console.log(name);
         res.redirect(`/location/${locationid}/review/new?err=val`);
       } else {
         showError(req, res, statusCode);
-
       }
-    }
-  )
+    });
+  }
 };
 
 module.exports = {
