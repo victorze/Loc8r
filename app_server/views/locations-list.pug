@@ -12,6 +12,9 @@ block content
     .col-12.col-md-8
       .error= message
 
+      app-home-list
+
+    // -
       each location in locations
         .card
           .card-block
@@ -24,6 +27,10 @@ block content
               each facility in location.facilities
                 span.badge.badge-warning= facility
 
-
     .col-12.col-md-4
       p.lead= sidebar
+
+block scripts
+  script(src='/build/runtime-es2015.edb2fcf2778e7bf1d426.js')
+  script(src='/build/polyfills-es2015.2987770fde9daa1d8a2e.js')
+  script(src='/build/main-es2015.99437a49b03f17ec7b01.js')
