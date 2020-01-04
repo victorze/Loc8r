@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 
-import { Location } from "../home-list/home-list.component";
+import { Location, Review } from '../location';
 import { Loc8rDataService } from "../loc8r-data.service";
 
 @Component({
@@ -13,7 +13,7 @@ export class LocationDetailsComponent implements OnInit {
 
   public googleAPIKey: string = "AIzaSyDGn_IDiey42MkjrNl74adhqhUz696XoCw";
 
-  public newReview = {
+  public newReview: Review = {
     author: "",
     rating: 5,
     reviewText: ""
@@ -52,7 +52,7 @@ export class LocationDetailsComponent implements OnInit {
       console.log(this.newReview);
       this.loc8rDataService
         .addReviewByLocationId(this.location._id, this.newReview)
-        .then(review => {
+        .then((review: Review) => {
           console.log("Review saved", review);
           let reviews = this.location.reviews.slice(0);
           reviews.unshift(review);
