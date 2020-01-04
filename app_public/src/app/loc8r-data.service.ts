@@ -12,13 +12,36 @@ export class Loc8rDataService {
   private apiBaseUrl = "http://localhost:3000/api";
 
   public getLocations(lat: number, lng: number): Promise<Location[]> {
-    console.log({lat, lng});
+    console.log({ lat, lng });
+    lat = 51.456;
+    lng = -0.967;
     const maxDistance: number = 20;
     const url: string = `${this.apiBaseUrl}/locations?lng=${lng}&lat=${lat}&maxDistance=${maxDistance}`;
     return this.http
       .get(url)
       .toPromise()
       .then(response => response as Location[])
+      .catch(this.handleError);
+  }
+
+  public getLocationById(locationId: string): Promise<Location> {
+    const url: string = `${this.apiBaseUrl}/locations/${locationId}`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => response as Location)
+      .catch(this.handleError);
+  }
+
+  public addReviewByLocationId(
+    locationId: string,
+    formData: any
+  ): Promise<any> {
+    const url: string = `${this.apiBaseUrl}/locations/${locationId}/reviews`;
+    return this.http
+      .post(url, formData)
+      .toPromise()
+      .then(response => response as any)
       .catch(this.handleError);
   }
 
