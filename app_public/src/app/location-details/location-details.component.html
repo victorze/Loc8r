@@ -2,6 +2,7 @@
   <div class="col-12 col-md-6">
     <app-rating-stars [rating]="location.rating"></app-rating-stars>
     <p>{{ location.address }}</p>
+
     <div class="card card-primary">
       <div class="card-block">
         <h2 class="card-title">Opening hours</h2>
@@ -23,6 +24,7 @@
         </div>
       </div>
     </div>
+
     <div class="card card-primary">
       <div class="card-block">
         <h2 class="card-title">Facilities</h2>
@@ -36,6 +38,7 @@
       </div>
     </div>
   </div>
+
   <div class="col-12 col-md-6 location-map">
     <div class="card card-primary">
       <div class="card-block">
@@ -45,33 +48,36 @@
     </div>
   </div>
 </div>
+
 <div class="row">
   <div class="col-12">
     <div class="card card-primary review-card">
-      <div class="card-block">
-        <a (click)="formVisible = true" class="btn btn-primary float-right">
+      <div class="card-block" [ngSwitch]="isLoggedIn()">
+        <button
+          (click)="formVisible = true"
+          class="btn btn-primary float-right"
+          *ngSwitchCase="true"
+        >
           Add review
-        </a>
+        </button>
+        <a
+          routerLink="/login"
+          class="btn btn-primary float-right"
+          *ngSwitchDefault
+          >Log in to add review</a
+        >
+
         <h2 class="card-title">Customer reviews</h2>
 
         <div *ngIf="formVisible">
           <form (ngSubmit)="onReviewSubmit()">
             <hr />
             <h4>Add your review</h4>
+
             <div *ngIf="formError" class="alert alert-danger" role="alert">
               {{ formError }}
             </div>
-            <div class="form-group row">
-              <label for="name" class="col-sm-2 col-form-label">Name</label>
-              <div class="col-sm-10">
-                <input
-                  [(ngModel)]="newReview.author"
-                  id="name"
-                  name="name"
-                  class="form-control"
-                />
-              </div>
-            </div>
+
             <div class="form-group row">
               <label for="rating" class="col-sm-2 col-form-label">Rating</label>
               <div class="col-sm-10 col-md-2">
@@ -89,6 +95,7 @@
                 </select>
               </div>
             </div>
+
             <div class="form-group row">
               <label for="review" class="col-sm-2 col-form-label">Review</label>
               <div class="col-sm-10">
@@ -101,6 +108,7 @@
                 ></textarea>
               </div>
             </div>
+
             <div class="form-group row">
               <div class="col-12">
                 <button
@@ -130,8 +138,7 @@
             class="row review"
           >
             <div class="col-12 no-gutters review-header">
-              <app-rating-stars [rating]="review.rating">
-              </app-rating-stars>
+              <app-rating-stars [rating]="review.rating"> </app-rating-stars>
               <span class="reviewAuthor"> {{ review.author }}</span>
               <small class="reviewTimestamp">
                 {{ review.createdOn | date: "d MMMM yyyy" }}

@@ -7,7 +7,7 @@
     </p>
 
     <form (submit)="onRegisterSubmit()">
-      <div role="alert" *ngIf="formErrors" class="alert alert-danger">
+      <div role="alert" *ngIf="formError" class="alert alert-danger">
         {{ formError }}
       </div>
 
@@ -37,7 +37,7 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input
-          type="pasword"
+          type="password"
           class="form-control"
           id="password"
           name="password"
