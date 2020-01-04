@@ -15,8 +15,8 @@
             >
               {{ time.days }} :
               <span *ngSwitchCase="true">Closed</span>
-              <span *ngSwitchDefault
-                >{{ time.opening + " - " + time.closing }}
+              <span *ngSwitchDefault>
+                {{ time.opening + " - " + time.closing }}
               </span>
             </p>
           </div>
@@ -52,7 +52,6 @@
         <a (click)="formVisible = true" class="btn btn-primary float-right">
           Add review
         </a>
-
         <h2 class="card-title">Customer reviews</h2>
 
         <div *ngIf="formVisible">
@@ -131,12 +130,12 @@
             class="row review"
           >
             <div class="col-12 no-gutters review-header">
-              <app-rating-stars [rating]="review.rating" class="rating">
+              <app-rating-stars [rating]="review.rating">
               </app-rating-stars>
               <span class="reviewAuthor"> {{ review.author }}</span>
               <small class="reviewTimestamp">
-                {{ review.createdOn | date: "d MMMM yyyy" }}</small
-              >
+                {{ review.createdOn | date: "d MMMM yyyy" }}
+              </small>
             </div>
             <div class="col-12">
               <p [innerHTML]="review.reviewText | htmlLineBreaks"></p>
